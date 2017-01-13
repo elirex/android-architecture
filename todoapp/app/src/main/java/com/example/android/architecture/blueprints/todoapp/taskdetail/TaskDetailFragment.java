@@ -24,20 +24,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity;
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment;
-import com.google.common.base.Preconditions;
+import com.example.android.architecture.blueprints.todoapp.data.Task;
+import com.example.android.architecture.blueprints.todoapp.databinding.TaskdetailFragBinding;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -54,11 +53,13 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
 
     private TaskDetailContract.Presenter mPresenter;
 
-    private TextView mDetailTitle;
+    private TaskDetailViewModel mTaskDetailViewModel;
 
-    private TextView mDetailDescription;
+    // private TextView mDetailTitle;
 
-    private CheckBox mDetailCompleteStatus;
+    // private TextView mDetailDescription;
+
+    // private CheckBox mDetailCompleteStatus;
 
     public static TaskDetailFragment newInstance(@Nullable String taskId) {
         Bundle arguments = new Bundle();
@@ -71,18 +72,26 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        mPresenter.subscribe();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.unsubscribe();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.taskdetail_frag, container, false);
+        TaskdetailFragBinding taskdetailFragBinding = TaskdetailFragBinding
+                .inflate(inflater, container, false);
+        taskdetailFragBinding.setTask(mTaskDetailViewModel);
         setHasOptionsMenu(true);
-        mDetailTitle = (TextView) root.findViewById(R.id.task_detail_title);
-        mDetailDescription = (TextView) root.findViewById(R.id.task_detail_description);
-        mDetailCompleteStatus = (CheckBox) root.findViewById(R.id.task_detail_complete);
+        // mDetailTitle = (TextView) root.findViewById(R.id.task_detail_title);
+        // mDetailDescription = (TextView) root.findViewById(R.id.task_detail_description);
+        // mDetailCompleteStatus = (CheckBox) root.findViewById(R.id.task_detail_complete);
 
         // Set up floating action button
         FloatingActionButton fab =
@@ -95,12 +104,17 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
             }
         });
 
+        View root = taskdetailFragBinding.getRoot();
         return root;
     }
 
     @Override
     public void setPresenter(@NonNull TaskDetailContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
+    }
+
+    public void setViewModel(TaskDetailViewModel viewModel) {
+        mTaskDetailViewModel = viewModel;
     }
 
     @Override
@@ -120,44 +134,16 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
 
     @Override
     public void setLoadingIndicator(boolean active) {
+        Log.d(TaskDetailFragment.class.getSimpleName(),
+                "Is active:" + active);
         if (active) {
-            mDetailTitle.setText("");
-            mDetailDescription.setText(getString(R.string.loading));
+            mTaskDetailViewModel.loadingTask();
         }
     }
 
     @Override
-    public void hideDescription() {
-        mDetailDescription.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void hideTitle() {
-        mDetailTitle.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showDescription(@NonNull String description) {
-        mDetailDescription.setVisibility(View.VISIBLE);
-        mDetailDescription.setText(description);
-    }
-
-    @Override
-    public void showCompletionStatus(final boolean complete) {
-        Preconditions.checkNotNull(mDetailCompleteStatus);
-
-        mDetailCompleteStatus.setChecked(complete);
-        mDetailCompleteStatus.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            mPresenter.completeTask();
-                        } else {
-                            mPresenter.activateTask();
-                        }
-                    }
-                });
+    public void showTask(Task task) {
+        mTaskDetailViewModel.setTask(task);
     }
 
     @Override
@@ -193,16 +179,17 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
         }
     }
 
-    @Override
-    public void showTitle(@NonNull String title) {
-        mDetailTitle.setVisibility(View.VISIBLE);
-        mDetailTitle.setText(title);
-    }
+    // @Override
+    // public void showTitle(@NonNull String title) {
+        // mDetailTitle.setVisibility(View.VISIBLE);
+        // mDetailTitle.setText(title);
+    // }
 
     @Override
     public void showMissingTask() {
-        mDetailTitle.setText("");
-        mDetailDescription.setText(getString(R.string.no_data));
+        mTaskDetailViewModel.missingTask();
+     // mDetailTitle.setText("");
+     // mDetailDescription.setText(getString(R.string.no_data));
     }
 
     @Override

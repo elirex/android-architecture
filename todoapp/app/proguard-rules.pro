@@ -4,6 +4,7 @@
 -keep class android.support.v4.widget.DrawerLayout { *; }
 -keep class android.support.test.espresso.IdlingResource { *; }
 -keep class com.google.common.base.Preconditions { *; }
+-keep class android.databinding.** { *; }
 
 # For Guava:
 -dontwarn javax.annotation.**
@@ -25,3 +26,9 @@
 -dontwarn com.squareup.javawriter.JavaWriter
 # Uncomment this if you use Mockito
 -dontwarn org.mockito.**
+
+
+# rxjava
+-keep class rx.observers.TestSubscriber {
+    public <methods>;
+}

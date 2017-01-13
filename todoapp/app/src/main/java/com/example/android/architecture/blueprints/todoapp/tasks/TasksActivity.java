@@ -73,7 +73,12 @@ public class TasksActivity extends AppCompatActivity {
 
         // Create the presenter
         mTasksPresenter = new TasksPresenter(
-                Injection.provideTasksRepository(getApplicationContext()), tasksFragment);
+                Injection.provideTasksRepository(getApplicationContext()),
+                tasksFragment,
+                Injection.providerSchedulerProvider());
+
+        TasksViewModel tasksViewModel = new TasksViewModel(getApplicationContext(), mTasksPresenter);
+        tasksFragment.setViewModel(tasksViewModel);
 
         // Load previously saved state, if available.
         if (savedInstanceState != null) {
@@ -132,4 +137,5 @@ public class TasksActivity extends AppCompatActivity {
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
     }
+
 }

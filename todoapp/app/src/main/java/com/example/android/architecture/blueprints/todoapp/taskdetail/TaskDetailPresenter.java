@@ -18,11 +18,16 @@ package com.example.android.architecture.blueprints.todoapp.taskdetail;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.android.architecture.blueprints.todoapp.data.Task;
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
+import com.example.android.architecture.blueprints.todoapp.util.schedulers.BaseSchedulerProvider;
 import com.google.common.base.Strings;
+
+import rx.Observer;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,26 +37,42 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class TaskDetailPresenter implements TaskDetailContract.Presenter {
 
+    @NonNull
     private final TasksRepository mTasksRepository;
 
+    @NonNull
     private final TaskDetailContract.View mTaskDetailView;
+
+    @NonNull
+    private final BaseSchedulerProvider mSchedulerProvider;
 
     @Nullable
     private String mTaskId;
 
+    @NonNull
+    private CompositeSubscription mSubscriptions;
+
     public TaskDetailPresenter(@Nullable String taskId,
                                @NonNull TasksRepository tasksRepository,
-                               @NonNull TaskDetailContract.View taskDetailView) {
+                               @NonNull TaskDetailContract.View taskDetailView,
+                               @NonNull BaseSchedulerProvider schedulerProvider) {
         mTaskId = taskId;
         mTasksRepository = checkNotNull(tasksRepository, "tasksRepository cannot be null!");
         mTaskDetailView = checkNotNull(taskDetailView, "taskDetailView cannot be null!");
+        mSchedulerProvider = checkNotNull(schedulerProvider, "schedulerProvider cannot be null!");
 
+        mSubscriptions = new CompositeSubscription();
         mTaskDetailView.setPresenter(this);
     }
 
     @Override
-    public void start() {
+    public void subscribe() {
         openTask();
+    }
+
+    @Override
+    public void unsubscribe() {
+        mSubscriptions.clear();
     }
 
     private void openTask() {
@@ -61,30 +82,25 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         }
 
         mTaskDetailView.setLoadingIndicator(true);
-        mTasksRepository.getTask(mTaskId, new TasksDataSource.GetTaskCallback() {
-            @Override
-            public void onTaskLoaded(Task task) {
-                // The view may not be able to handle UI updates anymore
-                if (!mTaskDetailView.isActive()) {
-                    return;
-                }
-                mTaskDetailView.setLoadingIndicator(false);
-                if (null == task) {
-                    mTaskDetailView.showMissingTask();
-                } else {
-                    showTask(task);
-                }
-            }
+        Subscription subscription = mTasksRepository.getTask(mTaskId)
+                .subscribeOn(mSchedulerProvider.computation())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(new Observer<Task>() {
+                    @Override
+                    public void onCompleted() {
+                        mTaskDetailView.setLoadingIndicator(false);
+                    }
 
-            @Override
-            public void onDataNotAvailable() {
-                // The view may not be able to handle UI updates anymore
-                if (!mTaskDetailView.isActive()) {
-                    return;
-                }
-                mTaskDetailView.showMissingTask();
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Task task) {
+                        mTaskDetailView.showTask(task);
+                    }
+                });
+        mSubscriptions.add(subscription);
     }
 
     @Override
@@ -126,21 +142,21 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.showTaskMarkedActive();
     }
 
-    private void showTask(@NonNull Task task) {
-        String title = task.getTitle();
-        String description = task.getDescription();
+    // private void showTask(@NonNull Task task) {
+    //     String title = task.getTitle();
+    //     String description = task.getDescription();
 
-        if (Strings.isNullOrEmpty(title)) {
-            mTaskDetailView.hideTitle();
-        } else {
-            mTaskDetailView.showTitle(title);
-        }
+    //     if (Strings.isNullOrEmpty(title)) {
+    //         mTaskDetailView.hideTitle();
+    //     } else {
+    //         mTaskDetailView.showTitle(title);
+    //     }
 
-        if (Strings.isNullOrEmpty(description)) {
-            mTaskDetailView.hideDescription();
-        } else {
-            mTaskDetailView.showDescription(description);
-        }
-        mTaskDetailView.showCompletionStatus(task.isCompleted());
-    }
+    //     if (Strings.isNullOrEmpty(description)) {
+    //         mTaskDetailView.hideDescription();
+    //     } else {
+    //         mTaskDetailView.showDescription(description);
+    //     }
+    //     mTaskDetailView.showCompletionStatus(task.isCompleted());
+    // }
 }

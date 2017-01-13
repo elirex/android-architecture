@@ -68,8 +68,14 @@ public class StatisticsActivity extends AppCompatActivity {
                     statisticsFragment, R.id.contentFrame);
         }
 
-        new StatisticsPresenter(
-                Injection.provideTasksRepository(getApplicationContext()), statisticsFragment);
+        StatisticsViewModel statisticsViewModel = new StatisticsViewModel(getApplicationContext());
+
+        statisticsFragment.setViewModel(statisticsViewModel);
+
+        StatisticsPresenter statisticsPresenter = new StatisticsPresenter(
+                Injection.provideTasksRepository(getApplicationContext()),
+                    statisticsViewModel, Injection.providerSchedulerProvider());
+        statisticsFragment.setPresenter(statisticsPresenter);
     }
 
     @Override
