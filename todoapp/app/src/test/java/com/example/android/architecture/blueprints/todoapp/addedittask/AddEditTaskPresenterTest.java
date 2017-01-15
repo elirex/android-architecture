@@ -122,8 +122,9 @@ public class AddEditTaskPresenterTest {
         // Then the task repository is queried and the view updated
         verify(mTasksRepository).getTask(eq(testTask.getId()));
 
-        verify(mAddEditTaskView).setTitle(testTask.getTitle());
-        verify(mAddEditTaskView).setDescription(testTask.getDescription());
+        verify(mAddEditTaskView).setTask(testTask);
+        // verify(mAddEditTaskView).setTitle(testTask.getTitle());
+        // verify(mAddEditTaskView).setDescription(testTask.getDescription());
     }
 
     @Test
@@ -143,8 +144,9 @@ public class AddEditTaskPresenterTest {
         verify(mTasksRepository).getTask(eq(testTask.getId()));
 
         verify(mAddEditTaskView).showEmptyTaskError();
-        verify(mAddEditTaskView, never()).setTitle(testTask.getTitle());
-        verify(mAddEditTaskView, never()).setDescription(testTask.getDescription());
+        verify(mAddEditTaskView, never()).setTask(testTask);
+        // verify(mAddEditTaskView, never()).setTitle(testTask.getTitle());
+        // verify(mAddEditTaskView, never()).setDescription(testTask.getDescription());
     }
 
 }

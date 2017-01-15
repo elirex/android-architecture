@@ -69,11 +69,14 @@ public class AddEditTaskActivity extends AppCompatActivity {
         }
 
         // Create the presenter
-        new AddEditTaskPresenter(
+        AddEditTaskPresenter presenter =  new AddEditTaskPresenter(
                 taskId,
                 Injection.provideTasksRepository(getApplicationContext()),
                 addEditTaskFragment,
                 Injection.providerSchedulerProvider());
+        AddEditTaskViewModel addEditTaskViewModel =
+                new AddEditTaskViewModel(this, presenter);
+        addEditTaskFragment.setViewModel(addEditTaskViewModel);
     }
 
     @Override

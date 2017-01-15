@@ -100,7 +100,7 @@ public class TaskDetailViewModel extends BaseObservable {
     }
 
 
-    public void setTask(Task task) {
+    public void showTask(Task task) {
         String title = task.getTitle();
         String description = task.getDescription();
         mIsCompleted = task.isCompleted();

@@ -125,8 +125,9 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter {
                     @Override
                     public void onNext(Task task) {
                         if (mAddTaskView.isActive()) {
-                            mAddTaskView.setTitle(task.getTitle());
-                            mAddTaskView.setDescription(task.getDescription());
+                            mAddTaskView.setTask(task);
+                            // mAddTaskView.setTitle(task.getTitle());
+                            // mAddTaskView.setDescription(task.getDescription());
                         }
                     }
                 });

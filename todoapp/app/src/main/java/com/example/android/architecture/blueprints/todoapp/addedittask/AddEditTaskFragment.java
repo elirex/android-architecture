@@ -26,9 +26,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.example.android.architecture.blueprints.todoapp.data.Task;
+import com.example.android.architecture.blueprints.todoapp.databinding.AddtaskFragBinding;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -40,10 +41,11 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     public static final String ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID";
 
     private AddEditTaskContract.Presenter mPresenter;
+    private AddEditTaskViewModel mAddEditTaskViewModel;
 
-    private TextView mTitle;
+    // private TextView mTitle;
 
-    private TextView mDescription;
+    // private TextView description;
 
     public static AddEditTaskFragment newInstance() {
         return new AddEditTaskFragment();
@@ -66,6 +68,10 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         mPresenter = checkNotNull(presenter);
     }
 
+    public void setViewModel(@NonNull AddEditTaskViewModel viewModel) {
+        mAddEditTaskViewModel = viewModel;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -76,8 +82,10 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.saveTask(mTitle.getText().toString(),
-                        mDescription.getText().toString());
+                // TODO: Changes the saveTask method of AddEditTaskViewModel
+                mAddEditTaskViewModel.saveTask();
+                // mPresenter.saveTask(mTitle.getText().toString(),
+                //     description.getText().toString());
             }
         });
     }
@@ -86,18 +94,20 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.addtask_frag, container, false);
-        mTitle = (TextView) root.findViewById(R.id.add_task_title);
-        mDescription = (TextView) root.findViewById(R.id.add_task_description);
-
+        AddtaskFragBinding addtaskFragBinding = AddtaskFragBinding
+                .inflate(inflater, container, false);
+        addtaskFragBinding.setTask(mAddEditTaskViewModel);
         setHasOptionsMenu(true);
         setRetainInstance(true);
+        // View root = inflater.inflate(R.layout.addtask_frag, container, false);
+        View root = addtaskFragBinding.getRoot();
         return root;
     }
 
     @Override
     public void showEmptyTaskError() {
-        Snackbar.make(mTitle, getString(R.string.empty_task_message), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getView(), getString(R.string.empty_task_message),
+                Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -107,14 +117,20 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     }
 
     @Override
-    public void setTitle(String title) {
-        mTitle.setText(title);
+    public void setTask(Task task) {
+        // TODO: Adds the setTask method of AddEditTaskViewModel
+        mAddEditTaskViewModel.setTask(task);
     }
 
-    @Override
-    public void setDescription(String description) {
-        mDescription.setText(description);
-    }
+    // @Override
+    // public void setTitle(String title) {
+    //     mTitle.setText(title);
+    // }
+
+    // @Override
+    // public void setDescription(String description) {
+    //     description.setText(description);
+    // }
 
     @Override
     public boolean isActive() {

@@ -143,7 +143,7 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
 
     @Override
     public void showTask(Task task) {
-        mTaskDetailViewModel.setTask(task);
+        mTaskDetailViewModel.showTask(task);
     }
 
     @Override

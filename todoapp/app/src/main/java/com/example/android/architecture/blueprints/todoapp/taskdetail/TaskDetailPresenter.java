@@ -142,7 +142,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.showTaskMarkedActive();
     }
 
-    // private void showTask(@NonNull Task task) {
+    // private void setTask(@NonNull Task task) {
     //     String title = task.getTitle();
     //     String description = task.getDescription();
 
