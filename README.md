@@ -1,27 +1,27 @@
 # TODO-DataBinding-RxJava
 
-It is based on the [todo-mvp](https://github.com/googlesamples/android-architecture/tree/todo-mvp/todoapp) sample and combined the [todo-datatbinding](https://github.com/googlesamples/android-architecture/tree/todo-databinding/) and the [todo-mvp-rxjava](https://github.com/googlesamples/android-architecture/tree/todo-mvp-rxjava/).
+This sample is based on the [todo-mvp](https://github.com/googlesamples/android-architecture/tree/todo-mvp/todoapp) and combined other two samples, one is the [todo-datatbinding](https://github.com/googlesamples/android-architecture/tree/todo-databinding/) and onther is [todo-mvp-rxjava](https://github.com/googlesamples/android-architecture/tree/todo-mvp-rxjava/).
 Using the Data Binding library to display data and bind UI elements to actions
-and through the RxJava to communication between the data model and presenter layer.
+and through the RxJava to communicate between the data model and presenter layer.
 
-It doesn't follow a strict Model-View-ViewModel or a Model-View-Presenter
+This sample doesn't follow a strict Model-View-ViewModel or a Model-View-Presenter
 pattern, as it uses both View Models and Presenters.
-
 
 ## Feature components
 
-There are multiple ways to create the relevant parts of a feature using the
-Data Binding Library. In this case, the responsibility of each component in
-this sample is:
+### UI
 
-  * Activity: object creation
-  * Fragment: interaction with framework components (options menu, Snackbar, FAB,
-Adapter for list…)
-  * Presenter: receives user actions and retrieves the data from the repository. If
-it doesn't do data loading, it's calling an action handler (See [TasksItemActionHandler](https://github.com/googlesamples/android-architecture/blob/todo-databinding/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/tasks/TasksItemActionHandler.java))
-  * ViewModel: Exposes data for a particular view
+The responsibility of each component in this sample is:
 
-Some features don't have a ViewModel ([TaskDetail](https://github.com/googlesamples/android-architecture/blob/todo-databinding/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/taskdetail), [AddEditTask](https://github.com/googlesamples/android-architecture/blob/todo-databinding/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/addedittask)) as they use the Task model directly.
+  * Activity: Object creation.
+  * Fragment: Interaction with framework components.
+  * Presenter: Receives user actions and retrieves the data from the repository.
+  * ViewModel: Exposes data for a view.
+
+### Data
+
+Using RxJava streams as a way of retrieving task. The RxJava provides the easy
+way to convert between threads.
 
 ## Additional dependencies
 
@@ -30,35 +30,35 @@ Some features don't have a ViewModel ([TaskDetail](https://github.com/googlesamp
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 * [SqlBrite](https://github.com/square/sqlbrite)
 
-
 ## Features
+
+### Complexity
+
+Developers need to be familiar with RxJava and Data binding.
 
 ### Testability
 
 #### Unit testing
 
-As the Data Binding Library takes care of many of the wiring that would usually
-be unit tested, the number of unit tests is lower although the  test coverage
-should be similar.
+Very high. Unit tests are easy to implement, because the Observable of RxJava is
+highly unit testable.
 
 #### UI testing
 
-No difference with MVP.
+Similar with TODO-MVP.
 
 ### Code metrics
 
-Compared to MVP, there are more Java classes but less code per class. Because
-some wiring is moved to layouts, there are more XML lines.
-
-
+Compared to TODO-MVP, each page add ViewModel class but less UI code per Activity
+and Fragment, and add some classes to encapsulate the Schedulers of RxJava.
 ```
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-Java                            50           1079           1552           3327 (3450 in MVP)
-XML                             34            122            337            714
+Java                            54           1459           1554           3748 (3450 in MVP)
+XML                             35            126            337            736
 -------------------------------------------------------------------------------
-SUM:                            84           1201           1889           4041
+SUM:                            89           1585           1891           4484
 -------------------------------------------------------------------------------
 ```
 ### Maintainability
@@ -66,10 +66,12 @@ SUM:                            84           1201           1889           4041
 #### Ease of amending or adding a feature
 
 Easier than MVP for small changes. A new feature might require some experience
-with the library.
+with RxJava and Data Binding library.
 
 #### Learning cost
 
 The Data Binding library takes care of the communication between some
 components, so developers need to understand what it does and doesn't before
 making changes to the code.
+
+The RxJava uses new concepts, so developers need to understand how it work.
