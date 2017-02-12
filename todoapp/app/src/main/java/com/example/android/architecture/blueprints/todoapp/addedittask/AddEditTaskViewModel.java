@@ -13,14 +13,11 @@ public class AddEditTaskViewModel {
 
     private final AddEditTaskContract.Presenter mPresenter;
 
-
-    public ObservableField<String> title;
-    public ObservableField<String> description;
+    public final ObservableField<String> title = new ObservableField<>();
+    public final ObservableField<String> description = new ObservableField<>();
 
     public AddEditTaskViewModel(AddEditTaskContract.Presenter presenter) {
         mPresenter = presenter;
-        title = new ObservableField<String>();
-        description = new ObservableField<String>();
     }
 
     public void setTask(Task task) {
@@ -30,20 +27,6 @@ public class AddEditTaskViewModel {
 
     public void saveTask() {
         mPresenter.saveTask(title.get(), description.get());
-    }
-
-    public void onTitleChanged(CharSequence s, int start, int before, int count) {
-        String text = title.get();
-        if (text == null || !text.equals(s.toString())) {
-            title.set(s.toString());
-        }
-    }
-
-    public void onDescriptionChanged(CharSequence s, int start, int before, int count) {
-        String text = description.get();
-        if (text == null || !text.equals(s.toString())) {
-            description.set(s.toString());
-        }
     }
 
 }
