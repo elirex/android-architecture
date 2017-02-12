@@ -17,15 +17,12 @@
 package com.example.android.architecture.blueprints.todoapp.addedittask;
 
 import com.example.android.architecture.blueprints.todoapp.data.Task;
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
 import com.example.android.architecture.blueprints.todoapp.util.schedulers.BaseSchedulerProvider;
 import com.example.android.architecture.blueprints.todoapp.util.schedulers.ImmediateSchedulerProvider;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -123,8 +120,6 @@ public class AddEditTaskPresenterTest {
         verify(mTasksRepository).getTask(eq(testTask.getId()));
 
         verify(mAddEditTaskView).setTask(testTask);
-        // verify(mAddEditTaskView).setTitle(testTask.getTitle());
-        // verify(mAddEditTaskView).setDescription(testTask.getDescription());
     }
 
     @Test
@@ -145,8 +140,6 @@ public class AddEditTaskPresenterTest {
 
         verify(mAddEditTaskView).showEmptyTaskError();
         verify(mAddEditTaskView, never()).setTask(testTask);
-        // verify(mAddEditTaskView, never()).setTitle(testTask.getTitle());
-        // verify(mAddEditTaskView, never()).setDescription(testTask.getDescription());
     }
 
 }

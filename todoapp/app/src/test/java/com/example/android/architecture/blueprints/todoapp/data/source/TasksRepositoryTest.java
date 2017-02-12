@@ -105,7 +105,7 @@ public class TasksRepositoryTest {
         // Then tasks were only requested once from remote and local sources
         verify(mTasksRemoteDataSource).getTasks();
         verify(mTasksLocalDataSource).getTasks();
-        //
+
         assertFalse(mTasksRepository.mCacheIsDirty);
         testSubscriber1.assertValue(TASKS);
         testSubscriber2.assertValue(TASKS);

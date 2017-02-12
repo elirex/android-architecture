@@ -35,6 +35,7 @@ public class AddEditTaskActivity extends AppCompatActivity {
 
     public static final int REQUEST_ADD_TASK = 1;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +75,10 @@ public class AddEditTaskActivity extends AppCompatActivity {
                 Injection.provideTasksRepository(getApplicationContext()),
                 addEditTaskFragment,
                 Injection.providerSchedulerProvider());
+
+        // Create the ViewModel
         AddEditTaskViewModel addEditTaskViewModel =
-                new AddEditTaskViewModel(this, presenter);
+                new AddEditTaskViewModel(presenter);
         addEditTaskFragment.setViewModel(addEditTaskViewModel);
     }
 

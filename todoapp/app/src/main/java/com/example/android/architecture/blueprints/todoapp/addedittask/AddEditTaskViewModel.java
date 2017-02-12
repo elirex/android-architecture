@@ -13,16 +13,11 @@ public class AddEditTaskViewModel {
 
     private final AddEditTaskContract.Presenter mPresenter;
 
-    private Context mContext;
 
     public ObservableField<String> title;
     public ObservableField<String> description;
 
-
-
-    public AddEditTaskViewModel(Context context, AddEditTaskContract.Presenter
-                                presenter) {
-        mContext = context;
+    public AddEditTaskViewModel(AddEditTaskContract.Presenter presenter) {
         mPresenter = presenter;
         title = new ObservableField<String>();
         description = new ObservableField<String>();

@@ -77,6 +77,7 @@ public class TasksActivity extends AppCompatActivity {
                 tasksFragment,
                 Injection.providerSchedulerProvider());
 
+        // Create the ViewModel
         TasksViewModel tasksViewModel = new TasksViewModel(getApplicationContext(), mTasksPresenter);
         tasksFragment.setViewModel(tasksViewModel);
 

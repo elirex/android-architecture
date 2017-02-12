@@ -43,10 +43,6 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     private AddEditTaskContract.Presenter mPresenter;
     private AddEditTaskViewModel mAddEditTaskViewModel;
 
-    // private TextView mTitle;
-
-    // private TextView description;
-
     public static AddEditTaskFragment newInstance() {
         return new AddEditTaskFragment();
     }
@@ -82,10 +78,7 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Changes the saveTask method of AddEditTaskViewModel
                 mAddEditTaskViewModel.saveTask();
-                // mPresenter.saveTask(mTitle.getText().toString(),
-                //     description.getText().toString());
             }
         });
     }
@@ -99,7 +92,6 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         addtaskFragBinding.setTask(mAddEditTaskViewModel);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-        // View root = inflater.inflate(R.layout.addtask_frag, container, false);
         View root = addtaskFragBinding.getRoot();
         return root;
     }
@@ -118,22 +110,12 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
 
     @Override
     public void setTask(Task task) {
-        // TODO: Adds the setTask method of AddEditTaskViewModel
         mAddEditTaskViewModel.setTask(task);
     }
-
-    // @Override
-    // public void setTitle(String title) {
-    //     mTitle.setText(title);
-    // }
-
-    // @Override
-    // public void setDescription(String description) {
-    //     description.setText(description);
-    // }
 
     @Override
     public boolean isActive() {
         return isAdded();
     }
+
 }

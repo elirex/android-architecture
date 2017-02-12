@@ -26,7 +26,6 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepo
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 import com.example.android.architecture.blueprints.todoapp.util.schedulers.BaseSchedulerProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -35,7 +34,6 @@ import rx.Subscription;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -157,46 +155,6 @@ public class TasksPresenter implements TasksContract.Presenter {
         mSubscriptions.add(subscription);
     }
 
-    // private void processTasks(List<Task> tasks) {
-    //     if (tasks.isEmpty()) {
-    //         // Show a message indicating there are no tasks for that filter type.
-    //         processEmptyTasks();
-    //     } else {
-    //         // Show the list of tasks
-    //         mTasksView.showTasks(tasks);
-    //         // Set the filter label's text.
-    //         showFilterLabel();
-    //     }
-    // }
-
-   //  private void showFilterLabel() {
-   //      switch (mCurrentFiltering) {
-   //          case ACTIVE_TASKS:
-   //              mTasksView.showActiveFilterLabel();
-   //              break;
-   //          case COMPLETED_TASKS:
-   //              mTasksView.showCompletedFilterLabel();
-   //              break;
-   //          default:
-   //              mTasksView.showAllFilterLabel();
-   //              break;
-   //      }
-   //  }
-
-    // private void processEmptyTasks() {
-    //     switch (mCurrentFiltering) {
-    //         case ACTIVE_TASKS:
-    //             mTasksView.showNoActiveTasks();
-    //             break;
-    //         case COMPLETED_TASKS:
-    //             mTasksView.showNoCompletedTasks();
-    //             break;
-    //         default:
-    //             mTasksView.showNoTasks();
-    //             break;
-    //     }
-    // }
-
     @Override
     public void addNewTask() {
         mTasksView.showAddTask();
@@ -213,7 +171,6 @@ public class TasksPresenter implements TasksContract.Presenter {
         checkNotNull(completedTask, "completedTask cannot be null!");
         mTasksRepository.completeTask(completedTask);
         mTasksView.showTaskMarkedComplete();
-        // loadTasks(false, false);
     }
 
     @Override
@@ -221,7 +178,6 @@ public class TasksPresenter implements TasksContract.Presenter {
         checkNotNull(activeTask, "activeTask cannot be null!");
         mTasksRepository.activateTask(activeTask);
         mTasksView.showTaskMarkedActive();
-        // loadTasks(false, false);
     }
 
     @Override

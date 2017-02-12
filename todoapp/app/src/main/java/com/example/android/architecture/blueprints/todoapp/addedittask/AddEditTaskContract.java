@@ -33,10 +33,6 @@ public interface AddEditTaskContract {
 
         void setTask(Task task);
 
-        // void setTitle(String title);
-
-        // void setDescription(String description);
-
         boolean isActive();
     }
 

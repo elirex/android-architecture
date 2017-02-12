@@ -18,7 +18,6 @@ package com.example.android.architecture.blueprints.todoapp.taskdetail;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
@@ -142,21 +141,4 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.showTaskMarkedActive();
     }
 
-    // private void setTask(@NonNull Task task) {
-    //     String title = task.getTitle();
-    //     String description = task.getDescription();
-
-    //     if (Strings.isNullOrEmpty(title)) {
-    //         mTaskDetailView.hideTitle();
-    //     } else {
-    //         mTaskDetailView.showTitle(title);
-    //     }
-
-    //     if (Strings.isNullOrEmpty(description)) {
-    //         mTaskDetailView.hideDescription();
-    //     } else {
-    //         mTaskDetailView.showDescription(description);
-    //     }
-    //     mTaskDetailView.showCompletionStatus(task.isCompleted());
-    // }
 }

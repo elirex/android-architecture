@@ -17,7 +17,6 @@
 package com.example.android.architecture.blueprints.todoapp.statistics;
 
 import com.example.android.architecture.blueprints.todoapp.BasePresenter;
-import com.example.android.architecture.blueprints.todoapp.BaseView;
 
 /**
  * This specifies the contract between the view and the presenter.

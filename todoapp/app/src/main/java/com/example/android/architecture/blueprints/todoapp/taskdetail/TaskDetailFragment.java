@@ -55,12 +55,6 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
 
     private TaskDetailViewModel mTaskDetailViewModel;
 
-    // private TextView mDetailTitle;
-
-    // private TextView mDetailDescription;
-
-    // private CheckBox mDetailCompleteStatus;
-
     public static TaskDetailFragment newInstance(@Nullable String taskId) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_TASK_ID, taskId);
@@ -89,9 +83,6 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
                 .inflate(inflater, container, false);
         taskdetailFragBinding.setTask(mTaskDetailViewModel);
         setHasOptionsMenu(true);
-        // mDetailTitle = (TextView) root.findViewById(R.id.task_detail_title);
-        // mDetailDescription = (TextView) root.findViewById(R.id.task_detail_description);
-        // mDetailCompleteStatus = (CheckBox) root.findViewById(R.id.task_detail_complete);
 
         // Set up floating action button
         FloatingActionButton fab =
@@ -179,17 +170,9 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
         }
     }
 
-    // @Override
-    // public void showTitle(@NonNull String title) {
-        // mDetailTitle.setVisibility(View.VISIBLE);
-        // mDetailTitle.setText(title);
-    // }
-
     @Override
     public void showMissingTask() {
         mTaskDetailViewModel.missingTask();
-     // mDetailTitle.setText("");
-     // mDetailDescription.setText(getString(R.string.no_data));
     }
 
     @Override
